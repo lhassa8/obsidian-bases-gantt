@@ -4,7 +4,7 @@ Turn your Obsidian notes into an interactive Gantt chart — drag to reschedule,
 
 Requires **Obsidian 1.10.0+**.
 
-<!-- TODO: Add a screenshot of the Gantt chart here -->
+![Gantt chart showing tasks with dependencies and color coding](screenshots/gantt-demo.png)
 
 ---
 
