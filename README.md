@@ -1,101 +1,331 @@
 # Bases Gantt
 
-A Gantt chart / timeline view for [Obsidian Bases](https://obsidian.md/). Visualize your notes as an interactive project timeline with dependencies, progress tracking, and drag-to-edit.
+A Gantt chart view for [Obsidian](https://obsidian.md) Bases. Turn your notes into an interactive project timeline — drag to reschedule, track progress, visualize dependencies, and more.
 
-Requires **Obsidian 1.10.0+** (Bases API).
+Requires **Obsidian 1.10.0+** (Bases feature).
 
-## Features
+<!-- TODO: Add a screenshot of the Gantt chart here -->
 
-- **Interactive Gantt chart** powered by [Frappe Gantt](https://github.com/nicedoc/frappe-gantt) — drag bars to change dates, resize to adjust duration
-- **Auto-detection** — automatically maps your frontmatter properties (dates, progress, dependencies, status) without manual configuration
-- **Dependency arrows** — link tasks via wiki-links in a frontmatter property (e.g., `depends-on: "[[Other Task]]"`)
-- **Progress tracking** — visualize and edit task completion percentages by dragging the progress handle
-- **Color coding** — color bars by any property (status, priority, category) using 8 distinct colors
-- **Grouped rows** — when Bases groups are configured, tasks are organized under visual group headers
-- **Rich hover popups** — hover over a bar to see date range, duration, progress, dependencies, and a markdown preview of the note
-- **Right-click context menus** — open notes, set progress, create tasks, scroll to today
-- **Click-to-create** — click an empty date column or use the command palette to create a new task
-- **Milestones** — tasks where start equals end date render as compact milestone markers
-- **Keyboard shortcuts** — command palette commands for scrolling, creating tasks, and switching view modes
-- **Obsidian-native theming** — automatically adapts to light/dark mode and your accent color
+---
 
-## Installation
+## Quick Start
 
-### From source
+If you've never used Bases before, don't worry — here's everything from scratch.
 
-1. Clone this repository into your vault's plugins folder:
-   ```
-   cd /path/to/vault/.obsidian/plugins
-   git clone https://github.com/lhassa8/obsidian-bases-gantt bases-gantt
-   ```
-2. Install dependencies and build:
-   ```
-   cd bases-gantt
-   npm install
-   npm run build
-   ```
-3. In Obsidian, go to **Settings > Community plugins** and enable **Bases Gantt**.
+### Step 1: Create some notes with date properties
 
-### Manual install
+Each note that should appear on the Gantt chart needs at least a **start date** in its frontmatter (the YAML block at the top of a note). An end date is optional.
 
-1. Download `main.js`, `styles.css`, and `manifest.json` from the latest release.
-2. Create a folder `bases-gantt` in your vault's `.obsidian/plugins/` directory.
-3. Copy the three files into it.
-4. Enable the plugin in Obsidian settings.
+For example, create a few notes like this:
 
-## Usage
-
-1. Create a **Base** in Obsidian (right-click a folder, or use the command palette).
-2. Switch the view type to **Gantt** using the view selector dropdown.
-3. The plugin automatically detects date properties in your notes. If auto-detection doesn't find the right properties, use the gear icon to manually configure:
-   - **Start date** — the property containing each task's start date
-   - **End date** — the property containing each task's end date (optional; defaults to +1 day)
-   - **Dependencies** — a property containing wiki-links to predecessor tasks
-   - **Color by** — a property whose values determine bar colors
-   - **Progress** — a numeric property (0-100) for completion tracking
-   - **Label** — override the displayed name (defaults to file name)
-
-### Frontmatter example
-
+**Research.md**
 ```yaml
 ---
 start-date: 2026-03-01
-end-date: 2026-03-05
+end-date: 2026-03-07
+status: Done
+---
+Research phase of the project.
+```
+
+**Design.md**
+```yaml
+---
+start-date: 2026-03-08
+end-date: 2026-03-14
 status: In Progress
-progress: 40
+---
+Design mockups and wireframes.
+```
+
+**Development.md**
+```yaml
+---
+start-date: 2026-03-15
+end-date: 2026-03-28
+status: Not Started
 depends-on: "[[Research]], [[Design]]"
+---
+Build the thing.
+```
+
+> **Tip:** You can add frontmatter to any note by typing `---` at the very first line, adding your properties, and closing with another `---`.
+
+### Step 2: Create a Base
+
+1. Right-click a folder containing your notes (or use the command palette: `Create new base`)
+2. A Base is like a database view of your notes — it reads their frontmatter properties and displays them in a table
+
+### Step 3: Switch to the Gantt view
+
+1. In your Base, look for the **view type selector** (the dropdown at the top that likely says "Table")
+2. Switch it to **Gantt**
+3. Your notes should appear as bars on a timeline
+
+That's it! The plugin automatically detects which properties are dates, and uses them as start/end dates.
+
+---
+
+## Setting Up Your Notes
+
+The Gantt chart reads frontmatter properties from your notes. Here's what it can use:
+
+### Required
+
+| Property | What it does | Example |
+|----------|-------------|---------|
+| **Start date** | When the task begins. Without this, the note won't appear on the chart. | `start-date: 2026-03-01` |
+
+### Optional
+
+| Property | What it does | Example |
+|----------|-------------|---------|
+| **End date** | When the task ends. If omitted, defaults to 1 day after start. | `end-date: 2026-03-05` |
+| **Progress** | Completion percentage (0–100). Enables the progress bar on the task. | `progress: 40` |
+| **Dependencies** | Wiki-links to notes that must finish first. Shows arrows between bars. | `depends-on: "[[Design]]"` |
+| **Status / Priority / etc.** | Any text property can be used to color-code the bars. | `status: In Progress` |
+| **Label** | Override the displayed name (defaults to the file name). | `label: "Phase 1 Research"` |
+
+### Property names are flexible
+
+You don't have to use the exact names above. The plugin auto-detects properties by looking for common keywords:
+
+- **Start date:** `start`, `begin`, `from`, `created`
+- **End date:** `end`, `due`, `finish`, `deadline`, `until`
+- **Progress:** `progress`, `percent`, `completion`, `complete`, `done`
+- **Dependencies:** `depends`, `blocks`, `after`, `prerequisite`, `requires`
+- **Color by:** `status`, `priority`, `type`, `category`, `phase`, `stage`
+
+So `due-date`, `deadline`, `finish-date`, etc. all work as end dates without any configuration.
+
+### Dependencies
+
+To link tasks with dependency arrows, add a property with wiki-links to other notes:
+
+```yaml
+depends-on: "[[Task A]], [[Task B]]"
+```
+
+You can also use plain comma-separated names (without wiki-link brackets), but wiki-links are recommended because Obsidian will keep them updated if you rename notes.
+
+### Milestones
+
+If a task's start and end date are the same, it renders as a **milestone** — a compact marker on the timeline:
+
+```yaml
+---
+start-date: 2026-03-15
+end-date: 2026-03-15
 ---
 ```
 
-### View options
+---
 
-| Option | Description |
-|--------|-------------|
-| View mode | Quarter Day, Half Day, Day, Week, Month, or Year |
-| Bar height | Height of task bars in pixels (16-60) |
-| Show progress | Display and allow editing of progress bars |
-| Show expected progress | Show a dashed line for where progress should be based on elapsed time |
+## Configuring the View
 
-### Command palette
+Click the **gear icon** in the Base view header to open the Gantt settings panel.
 
-| Command | Description |
+### Properties Section
+
+If auto-detection picks the wrong properties (or you want to override it), you can manually assign each one:
+
+- **Start date** — Which date property to use as the bar's start
+- **End date** — Which date property to use as the bar's end
+- **Label** — Which property to use as the bar's label (defaults to file name)
+- **Dependencies** — Which property contains dependency links
+- **Color by** — Which property to color-code bars by (e.g., `status` gives each status value a different color)
+- **Progress** — Which numeric property represents completion (only visible when "Show progress" is on)
+
+### Display Section
+
+- **View mode** — Zoom level: Quarter Day, Half Day, Day, Week, Month, or Year
+- **Bar height** — How tall the task bars are (16–60 pixels)
+- **Show progress** — Toggle the progress bar overlay on tasks
+- **Show expected progress** — When progress is shown, adds a dashed line indicating where progress *should* be based on how much time has elapsed
+
+---
+
+## Interacting with the Chart
+
+### Drag a bar left/right
+Reschedules the task — changes the start and end dates. The dates are written back to the note's frontmatter automatically.
+
+### Drag the right edge of a bar
+Resizes the task — changes the end date while keeping the start date fixed.
+
+### Click a bar
+Opens the note in the current tab.
+
+### Right-click a bar
+Opens a context menu:
+- **Open note** — open in current tab
+- **Open in new tab** — open in a new tab
+- **Set progress** — quickly set to 0%, 25%, 50%, 75%, or 100%
+- **Scroll to today** — jump the chart to today's date
+
+### Right-click empty space
+- **Create new task** — creates a new note with today's date
+- **Scroll to today**
+
+### Click an empty date column
+Creates a new task at that specific date.
+
+### Hover over a bar
+Shows a popup with:
+- Date range and duration
+- Progress bar (if enabled)
+- Dependencies (names of linked tasks)
+- A preview of the note's content
+
+### Drag the progress handle
+If "Show progress" is enabled, a small handle appears inside the bar. Drag it to change the completion percentage.
+
+---
+
+## Using with Bases Grouping
+
+If you configure **grouping** in your Base (e.g., group by `status`), the Gantt chart reflects this with **group headers** — visual section bars that span the full date range of their group's tasks.
+
+---
+
+## Command Palette
+
+All commands are available via `Cmd/Ctrl + P`:
+
+| Command | What it does |
 |---------|-------------|
-| Gantt: Scroll to today | Jump the chart to today's date |
-| Gantt: Create new task | Create a new note with today's date pre-filled |
-| Gantt: Day view | Switch to day-level zoom |
-| Gantt: Week view | Switch to week-level zoom |
-| Gantt: Month view | Switch to month-level zoom |
-| Gantt: Year view | Switch to year-level zoom |
+| **Gantt: Scroll to today** | Jumps the chart to today's date |
+| **Gantt: Create new task** | Creates a new note with today's date pre-filled |
+| **Gantt: Day view** | Switch to day-level zoom |
+| **Gantt: Week view** | Switch to week-level zoom |
+| **Gantt: Month view** | Switch to month-level zoom |
+| **Gantt: Year view** | Switch to year-level zoom |
+
+---
+
+## Complete Example
+
+Here's a small project with all features in use. Create these notes in a folder, then create a Base from that folder and switch to Gantt view.
+
+**Planning.md**
+```yaml
+---
+start-date: 2026-04-01
+end-date: 2026-04-03
+status: Done
+progress: 100
+---
+Define project scope and requirements.
+```
+
+**Design.md**
+```yaml
+---
+start-date: 2026-04-04
+end-date: 2026-04-08
+status: Done
+progress: 100
+depends-on: "[[Planning]]"
+---
+Create wireframes and mockups.
+```
+
+**Backend.md**
+```yaml
+---
+start-date: 2026-04-09
+end-date: 2026-04-18
+status: In Progress
+progress: 60
+depends-on: "[[Design]]"
+---
+API and database implementation.
+```
+
+**Frontend.md**
+```yaml
+---
+start-date: 2026-04-09
+end-date: 2026-04-20
+status: In Progress
+progress: 30
+depends-on: "[[Design]]"
+---
+Build the UI components.
+```
+
+**Launch.md**
+```yaml
+---
+start-date: 2026-04-21
+end-date: 2026-04-21
+status: Not Started
+progress: 0
+depends-on: "[[Backend]], [[Frontend]]"
+---
+Ship it!
+```
+
+This will show:
+- **Planning** and **Design** as completed bars
+- **Backend** and **Frontend** running in parallel, both depending on Design
+- **Launch** as a milestone at the end, depending on both Backend and Frontend
+- Dependency arrows connecting them
+- Color-coded bars if you set "Color by" to `status`
+
+---
+
+## Troubleshooting
+
+### I don't see a "Gantt" option in the view selector
+Make sure the Bases Gantt plugin is enabled in **Settings > Community plugins**. Also make sure you're running Obsidian **1.10.0 or later**.
+
+### My notes don't appear on the chart
+- Make sure your notes have a **date property** in the frontmatter (e.g., `start-date: 2026-03-01`)
+- Make sure the date is a valid format: `YYYY-MM-DD`
+- Check that the correct property is selected in the gear icon settings
+
+### The chart shows "Configure a start date property"
+Open the view settings (gear icon) and select which property contains your start dates. This usually means auto-detection couldn't find a date property — make sure your notes have date values, not just text.
+
+### Dates are off by one day
+This can happen if date values include timezone information. Use the plain `YYYY-MM-DD` format (e.g., `2026-03-01`) without time components for best results.
+
+### Dependency arrows aren't showing
+- Make sure the dependency property uses wiki-link syntax: `depends-on: "[[Other Note]]"`
+- The linked note must also be in the Base (it needs a start date to appear on the chart)
+- Check that "Dependencies" is set to the correct property in view settings
+
+---
+
+## Installation
+
+### Community Plugins (Recommended)
+
+1. Open **Settings > Community plugins > Browse**
+2. Search for **Bases Gantt**
+3. Click **Install**, then **Enable**
+
+### Manual
+
+1. Download `main.js`, `styles.css`, and `manifest.json` from the [latest release](https://github.com/lhassa8/obsidian-bases-gantt/releases/latest)
+2. Create a folder called `bases-gantt` inside your vault's `.obsidian/plugins/` directory
+3. Place the three files in that folder
+4. Enable the plugin in **Settings > Community plugins**
+
+---
 
 ## Development
 
 ```bash
+git clone https://github.com/lhassa8/obsidian-bases-gantt
+cd obsidian-bases-gantt
 npm install
-npm run dev    # watch mode
+npm run dev    # watch mode with source maps
 npm run build  # production build
 ```
 
-The build produces `main.js` and `styles.css` in the project root.
+---
 
 ## License
 
