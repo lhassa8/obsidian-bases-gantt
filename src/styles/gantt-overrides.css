@@ -1,0 +1,298 @@
+/*
+ * Overrides for Frappe Gantt to integrate cleanly with Obsidian.
+ */
+
+/* Container — fill available space */
+.bases-gantt-view {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	min-height: 0;
+}
+
+.bases-gantt-view .gantt-wrapper {
+	border-radius: var(--radius-m);
+	border: 1px solid var(--background-modifier-border);
+	overflow: auto;
+	flex: 1;
+	min-height: 0;
+}
+
+.bases-gantt-view .gantt-container {
+	font-family: var(--font-interface);
+	border-radius: var(--radius-m);
+}
+
+/* Bar labels */
+.bases-gantt-view .gantt .bar-label {
+	font-family: var(--font-interface);
+	font-size: 12px;
+	font-weight: 500;
+}
+
+/* Sticky header */
+.bases-gantt-view .gantt-container .current-upper {
+	background: var(--background-primary);
+}
+
+.bases-gantt-view .gantt-container .side-header * {
+	background-color: var(--background-secondary);
+	color: var(--text-normal);
+	font-family: var(--font-interface);
+}
+
+.bases-gantt-view .gantt-container .side-header *:hover {
+	background-color: var(--background-modifier-hover);
+}
+
+/* Today button */
+.bases-gantt-view .gantt-container .today-button {
+	cursor: pointer;
+}
+
+/* Smooth color transitions on bars */
+.bases-gantt-view .gantt .bar {
+	transition: fill 0.2s ease, stroke 0.2s ease, opacity 0.2s ease;
+}
+
+.bases-gantt-view .gantt .bar-progress {
+	transition: fill 0.2s ease, width 0.15s ease;
+}
+
+/* Bar hover effects */
+.bases-gantt-view .gantt .bar-wrapper:hover .bar {
+	filter: brightness(1.1);
+}
+
+.bases-gantt-view .gantt .bar-wrapper {
+	cursor: pointer;
+}
+
+/* Handle cursor */
+.bases-gantt-view .gantt .handle {
+	cursor: ew-resize;
+}
+
+/* ── Today line enhancement ──────────────────────────────────────── */
+
+.bases-gantt-view .gantt .current-highlight {
+	opacity: 0.12;
+}
+
+.bases-gantt-view .gantt .current-date-highlight {
+	font-weight: 700;
+}
+
+/* ── Expected progress line ──────────────────────────────────────── */
+
+.bases-gantt-view .gantt .bar-expected-progress {
+	opacity: 0.35;
+	stroke-dasharray: 4 2;
+}
+
+/* ── Weekend column hover ────────────────────────────────────────── */
+
+.bases-gantt-view .gantt .grid-column:hover {
+	fill: var(--background-modifier-hover);
+	opacity: 0.25;
+}
+
+/* ── Color classes for "Color by" property values ────────────────── */
+
+.bases-gantt-view .gantt .gantt-color-0 .bar {
+	fill: var(--interactive-accent);
+	stroke: var(--interactive-accent);
+}
+
+.bases-gantt-view .gantt .gantt-color-1 .bar {
+	fill: var(--color-green);
+	stroke: var(--color-green);
+}
+
+.bases-gantt-view .gantt .gantt-color-2 .bar {
+	fill: var(--color-orange);
+	stroke: var(--color-orange);
+}
+
+.bases-gantt-view .gantt .gantt-color-3 .bar {
+	fill: var(--color-red);
+	stroke: var(--color-red);
+}
+
+.bases-gantt-view .gantt .gantt-color-4 .bar {
+	fill: var(--color-purple);
+	stroke: var(--color-purple);
+}
+
+.bases-gantt-view .gantt .gantt-color-5 .bar {
+	fill: var(--color-yellow);
+	stroke: var(--color-yellow);
+}
+
+.bases-gantt-view .gantt .gantt-color-6 .bar {
+	fill: var(--color-cyan);
+	stroke: var(--color-cyan);
+}
+
+.bases-gantt-view .gantt .gantt-color-7 .bar {
+	fill: var(--color-pink);
+	stroke: var(--color-pink);
+}
+
+/* ── Group header rows ───────────────────────────────────────────── */
+
+.bases-gantt-view .gantt .gantt-group-header .bar {
+	fill: var(--background-secondary);
+	stroke: var(--background-modifier-border);
+	stroke-width: 1;
+	opacity: 0.6;
+	rx: 4;
+	ry: 4;
+}
+
+.bases-gantt-view .gantt .gantt-group-header .bar-label {
+	fill: var(--text-muted);
+	font-weight: 700;
+	font-size: 11px;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+.bases-gantt-view .gantt .gantt-group-header .bar-progress {
+	display: none;
+}
+
+.bases-gantt-view .gantt .gantt-group-header .handle {
+	display: none;
+}
+
+/* ── Milestone rendering ─────────────────────────────────────────── */
+
+.bases-gantt-view .gantt .gantt-milestone .bar {
+	rx: 2;
+	ry: 2;
+	opacity: 0.9;
+}
+
+/* ── Rich hover popup ────────────────────────────────────────────── */
+
+.bases-gantt-view .popup-wrapper {
+	font-family: var(--font-interface);
+	border-radius: var(--radius-m);
+	border: 1px solid var(--background-modifier-border);
+	box-shadow: var(--shadow-s);
+	max-width: 360px;
+	background: var(--background-primary);
+}
+
+.bases-gantt-view .popup-wrapper .title {
+	font-weight: 600;
+	font-size: 14px;
+	color: var(--text-normal);
+}
+
+.bases-gantt-view .popup-wrapper .subtitle {
+	font-size: 12px;
+	color: var(--text-muted);
+	margin-top: 2px;
+}
+
+/* Progress bar inside popup */
+.gantt-popup-progress-row {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	margin-top: 6px;
+}
+
+.gantt-popup-progress {
+	flex: 1;
+	height: 6px;
+	background: var(--background-modifier-border);
+	border-radius: 3px;
+	overflow: hidden;
+	max-width: 100px;
+}
+
+.gantt-popup-progress-bar {
+	height: 100%;
+	background: var(--interactive-accent);
+	border-radius: 3px;
+	transition: width 0.3s ease;
+}
+
+.gantt-popup-progress-label {
+	font-size: 11px;
+	color: var(--text-muted);
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+.gantt-popup-deps {
+	font-size: 11px;
+	color: var(--text-muted);
+	margin-top: 4px;
+}
+
+.gantt-popup-hint {
+	font-size: 10px;
+	color: var(--text-faint);
+	margin-top: 8px;
+}
+
+/* Markdown preview in popup */
+.gantt-popup-preview {
+	margin-top: 8px;
+	padding-top: 8px;
+	border-top: 1px solid var(--background-modifier-border);
+	font-size: 12px;
+	line-height: 1.5;
+	color: var(--text-normal);
+	max-height: 120px;
+	overflow: hidden;
+	position: relative;
+}
+
+.gantt-popup-preview::after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 28px;
+	background: linear-gradient(transparent, var(--background-primary));
+	pointer-events: none;
+}
+
+.gantt-popup-preview p {
+	margin: 0 0 4px 0;
+}
+
+.gantt-popup-preview h1,
+.gantt-popup-preview h2,
+.gantt-popup-preview h3 {
+	font-size: 12px;
+	margin: 0 0 4px 0;
+}
+
+/* ── Empty state ─────────────────────────────────────────────────── */
+
+.gantt-empty-state {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 40px 20px;
+	text-align: center;
+	color: var(--text-muted);
+	min-height: 200px;
+}
+
+.gantt-empty-state p {
+	margin: 4px 0;
+}
+
+.gantt-empty-state .gantt-empty-hint {
+	font-size: var(--font-smallest);
+	color: var(--text-faint);
+}

@@ -1,0 +1,26 @@
+/*
+ * Bridge Frappe Gantt CSS variables to Obsidian's theme variables.
+ * Dark/light mode is handled automatically via Obsidian's CSS variable cascade.
+ */
+.bases-gantt-view {
+	--g-arrow-color: var(--text-muted);
+	--g-bar-color: var(--interactive-accent);
+	--g-bar-border: var(--interactive-accent);
+	--g-tick-color-thick: var(--background-modifier-border);
+	--g-tick-color: var(--background-modifier-border-hover);
+	--g-actions-background: var(--background-secondary);
+	--g-border-color: var(--background-modifier-border);
+	--g-text-muted: var(--text-muted);
+	--g-text-light: var(--text-on-accent);
+	--g-text-dark: var(--text-normal);
+	--g-progress-color: var(--interactive-accent-hover);
+	--g-handle-color: var(--text-normal);
+	--g-weekend-label-color: var(--background-secondary-alt);
+	--g-expected-progress: var(--background-modifier-border);
+	--g-header-background: var(--background-primary);
+	--g-row-color: var(--background-primary);
+	--g-row-border-color: var(--background-modifier-border);
+	--g-today-highlight: var(--interactive-accent);
+	--g-popup-actions: var(--background-secondary);
+	--g-weekend-highlight-color: var(--background-secondary);
+}

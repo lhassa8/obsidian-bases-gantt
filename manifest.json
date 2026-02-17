@@ -1,0 +1,10 @@
+{
+	"id": "bases-gantt",
+	"name": "Bases Gantt",
+	"version": "1.0.0",
+	"minAppVersion": "1.10.0",
+	"description": "Gantt chart / timeline view for Obsidian Bases. Visualize tasks with start and end dates, dependencies, and progress.",
+	"author": "Lars Tray",
+	"authorUrl": "https://github.com/lhassa8",
+	"isDesktopOnly": false
+}

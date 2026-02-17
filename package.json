@@ -1,0 +1,21 @@
+{
+	"name": "obsidian-bases-gantt",
+	"version": "1.0.0",
+	"description": "Gantt chart view for Obsidian Bases",
+	"main": "main.js",
+	"scripts": {
+		"dev": "node esbuild.config.mjs",
+		"build": "node esbuild.config.mjs production"
+	},
+	"keywords": [],
+	"license": "MIT",
+	"devDependencies": {
+		"@types/node": "^22.0.0",
+		"esbuild": "^0.24.0",
+		"obsidian": "latest",
+		"typescript": "^5.6.0"
+	},
+	"dependencies": {
+		"frappe-gantt": "^1.0.0"
+	}
+}

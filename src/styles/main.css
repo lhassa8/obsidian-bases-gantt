@@ -1,0 +1,3 @@
+@import '../../node_modules/frappe-gantt/dist/frappe-gantt.css';
+@import './obsidian-theme.css';
+@import './gantt-overrides.css';
