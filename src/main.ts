@@ -2,7 +2,7 @@ import { Plugin } from 'obsidian';
 import { GanttChartView, getGanttViewOptions } from './gantt-view';
 
 export default class BasesGanttPlugin extends Plugin {
-	async onload() {
+	onload() {
 		this.registerBasesView('gantt', {
 			name: 'Gantt',
 			icon: 'calendar-range',
@@ -16,7 +16,7 @@ export default class BasesGanttPlugin extends Plugin {
 
 		this.addCommand({
 			id: 'gantt-scroll-today',
-			name: 'Gantt: Scroll to today',
+			name: 'Scroll to today',
 			icon: 'calendar',
 			checkCallback: (checking) => {
 				const view = this.getActiveGanttView();
@@ -27,7 +27,7 @@ export default class BasesGanttPlugin extends Plugin {
 
 		this.addCommand({
 			id: 'gantt-create-task',
-			name: 'Gantt: Create new task',
+			name: 'Create new task',
 			icon: 'plus',
 			checkCallback: (checking) => {
 				const view = this.getActiveGanttView();
@@ -38,7 +38,7 @@ export default class BasesGanttPlugin extends Plugin {
 
 		this.addCommand({
 			id: 'gantt-view-day',
-			name: 'Gantt: Day view',
+			name: 'Day view',
 			checkCallback: (checking) => {
 				const view = this.getActiveGanttView();
 				if (checking) return !!view;
@@ -48,7 +48,7 @@ export default class BasesGanttPlugin extends Plugin {
 
 		this.addCommand({
 			id: 'gantt-view-week',
-			name: 'Gantt: Week view',
+			name: 'Week view',
 			checkCallback: (checking) => {
 				const view = this.getActiveGanttView();
 				if (checking) return !!view;
@@ -58,7 +58,7 @@ export default class BasesGanttPlugin extends Plugin {
 
 		this.addCommand({
 			id: 'gantt-view-month',
-			name: 'Gantt: Month view',
+			name: 'Month view',
 			checkCallback: (checking) => {
 				const view = this.getActiveGanttView();
 				if (checking) return !!view;
@@ -68,7 +68,7 @@ export default class BasesGanttPlugin extends Plugin {
 
 		this.addCommand({
 			id: 'gantt-view-year',
-			name: 'Gantt: Year view',
+			name: 'Year view',
 			checkCallback: (checking) => {
 				const view = this.getActiveGanttView();
 				if (checking) return !!view;

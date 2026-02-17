@@ -13,7 +13,7 @@ import {
 import Gantt from 'frappe-gantt';
 import type { GanttOptions, PopupContext } from 'frappe-gantt';
 import { mapEntriesToTasks, createGroupHeaderTask, GROUP_HEADER_PREFIX, type GanttTask, type TaskMapperConfig } from './task-mapper';
-import { formatDateForFrontmatter, formatDateForGantt, parseObsidianDate } from './date-utils';
+import { formatDateForFrontmatter, parseObsidianDate } from './date-utils';
 
 export class GanttChartView extends BasesView {
 	type = 'gantt';
@@ -89,7 +89,7 @@ export class GanttChartView extends BasesView {
 		}
 		const today = formatDateForFrontmatter(new Date());
 		const propName = this.extractPropertyName(config.startProperty);
-		this.createFileForView('New Task', (frontmatter) => {
+		void this.createFileForView('New task', (frontmatter) => {
 			frontmatter[propName] = today;
 			if (config.endProperty) {
 				const endPropName = this.extractPropertyName(config.endProperty);
@@ -303,7 +303,7 @@ export class GanttChartView extends BasesView {
 				if (task.id.startsWith(GROUP_HEADER_PREFIX)) return;
 				const ganttTask = this.findTask(task.id);
 				if (ganttTask) {
-					this.app.workspace.openLinkText(ganttTask.filePath, '', false);
+					void this.app.workspace.openLinkText(ganttTask.filePath, '', false);
 				}
 			},
 
@@ -331,7 +331,7 @@ export class GanttChartView extends BasesView {
 				// bar on mouseup, and multiple bars fire synchronously when
 				// move_dependencies is true. A shared debounce would drop all
 				// but the last bar's update.
-				this.writeFrontmatter(ganttTask.filePath, updates);
+				void this.writeFrontmatter(ganttTask.filePath, updates);
 			},
 
 			on_progress_change: (task, progress) => {
@@ -342,7 +342,7 @@ export class GanttChartView extends BasesView {
 				const mapperConfig = this.getTaskMapperConfig();
 				if (mapperConfig.progressProperty) {
 					const propName = this.extractPropertyName(mapperConfig.progressProperty);
-					this.writeFrontmatter(ganttTask.filePath, {
+					void this.writeFrontmatter(ganttTask.filePath, {
 						[propName]: Math.round(progress),
 					});
 				}
@@ -357,17 +357,17 @@ export class GanttChartView extends BasesView {
 		// so we can remove them on cleanup (Frappe never removes them itself).
 		// The Gantt constructor is fully synchronous so this is safe.
 		const captured: EventListener[] = [];
-		const origAdd = document.addEventListener;
-		document.addEventListener = function (
+		const origAdd = document.addEventListener.bind(document);
+		document.addEventListener = ((
 			type: string,
 			listener: EventListenerOrEventListenerObject,
 			options?: boolean | AddEventListenerOptions,
-		) {
+		) => {
 			if (type === 'mouseup') {
 				captured.push(listener as EventListener);
 			}
-			return origAdd.call(document, type, listener, options);
-		} as typeof document.addEventListener;
+			return origAdd(type, listener, options);
+		}) as typeof document.addEventListener;
 
 		try {
 			this.gantt = new Gantt(this.ganttEl, tasks, options);
@@ -390,8 +390,6 @@ export class GanttChartView extends BasesView {
 			}
 		}
 
-		// Apply embedded height
-		this.applyHeight();
 	}
 
 	// ── Rich hover popup ──────────────────────────────────────────────
@@ -448,7 +446,7 @@ export class GanttChartView extends BasesView {
 		ctx.set_details(parts.join(''));
 
 		// Async: render a markdown preview of the note body
-		this.renderPopupPreview(ganttTask);
+		void this.renderPopupPreview(ganttTask);
 	}
 
 	/** Asynchronously render a truncated markdown preview in the popup. */
@@ -520,7 +518,7 @@ export class GanttChartView extends BasesView {
 			item.setTitle('Open note')
 				.setIcon('file-text')
 				.onClick(() => {
-					this.app.workspace.openLinkText(task.filePath, '', false);
+					void this.app.workspace.openLinkText(task.filePath, '', false);
 				});
 		});
 
@@ -528,7 +526,7 @@ export class GanttChartView extends BasesView {
 			item.setTitle('Open in new tab')
 				.setIcon('file-plus')
 				.onClick(() => {
-					this.app.workspace.openLinkText(task.filePath, '', true);
+					void this.app.workspace.openLinkText(task.filePath, '', true);
 				});
 		});
 
@@ -544,7 +542,7 @@ export class GanttChartView extends BasesView {
 							const mapperConfig = this.getTaskMapperConfig();
 							if (mapperConfig.progressProperty) {
 								const propName = this.extractPropertyName(mapperConfig.progressProperty);
-								this.writeFrontmatter(task.filePath, {
+								void this.writeFrontmatter(task.filePath, {
 									[propName]: pct,
 								});
 								// Instant visual feedback
@@ -601,7 +599,7 @@ export class GanttChartView extends BasesView {
 		const formattedDate = parsed ? formatDateForFrontmatter(parsed) : dateStr;
 
 		const propName = this.extractPropertyName(config.startProperty);
-		this.createFileForView('New Task', (frontmatter) => {
+		void this.createFileForView('New task', (frontmatter) => {
 			frontmatter[propName] = formattedDate;
 			if (config.endProperty) {
 				const endPropName = this.extractPropertyName(config.endProperty);
@@ -621,11 +619,6 @@ export class GanttChartView extends BasesView {
 			}
 		}
 		return earliest;
-	}
-
-	private applyHeight(): void {
-		// Let the chart fill the available container space
-		this.ganttEl.style.overflow = 'auto';
 	}
 
 	private findTask(id: string): GanttTask | undefined {
@@ -745,8 +738,8 @@ export function getGanttViewOptions(config: BasesViewConfig): BasesAllOptions[] 
 					displayName: 'View mode',
 					default: 'Day',
 					options: {
-						'Quarter Day': 'Quarter Day',
-						'Half Day': 'Half Day',
+						'Quarter Day': 'Quarter day',
+						'Half Day': 'Half day',
 						Day: 'Day',
 						Week: 'Week',
 						Month: 'Month',
