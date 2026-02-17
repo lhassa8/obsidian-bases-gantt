@@ -1,8 +1,8 @@
 # Bases Gantt
 
-A Gantt chart view for [Obsidian](https://obsidian.md) Bases. Turn your notes into an interactive project timeline — drag to reschedule, track progress, visualize dependencies, and more.
+Turn your Obsidian notes into an interactive Gantt chart — drag to reschedule, track progress, visualize dependencies, and more.
 
-Requires **Obsidian 1.10.0+** (Bases feature).
+Requires **Obsidian 1.10.0+**.
 
 <!-- TODO: Add a screenshot of the Gantt chart here -->
 
@@ -10,13 +10,11 @@ Requires **Obsidian 1.10.0+** (Bases feature).
 
 ## Quick Start
 
-If you've never used Bases before, don't worry — here's everything from scratch.
-
 ### Step 1: Create some notes with date properties
 
 Each note that should appear on the Gantt chart needs at least a **start date** in its frontmatter (the YAML block at the top of a note). An end date is optional.
 
-For example, create a few notes like this:
+For example, create a few notes in a folder:
 
 **Research.md**
 ```yaml
@@ -51,18 +49,15 @@ Build the thing.
 
 > **Tip:** You can add frontmatter to any note by typing `---` at the very first line, adding your properties, and closing with another `---`.
 
-### Step 2: Create a Base
+### Step 2: Open the folder as a Gantt chart
 
-1. Right-click a folder containing your notes (or use the command palette: `Create new base`)
-2. A Base is like a database view of your notes — it reads their frontmatter properties and displays them in a table
+1. Right-click the folder containing your notes
+2. Select **New base from folder** — this opens a structured view of all the notes inside
+3. At the top of the view, find the **view type dropdown** (it will say "Table" by default)
+4. Switch it to **Gantt**
+5. Your notes should appear as bars on a timeline
 
-### Step 3: Switch to the Gantt view
-
-1. In your Base, look for the **view type selector** (the dropdown at the top that likely says "Table")
-2. Switch it to **Gantt**
-3. Your notes should appear as bars on a timeline
-
-That's it! The plugin automatically detects which properties are dates, and uses them as start/end dates.
+That's it! The plugin automatically detects which properties are dates and maps them to the chart.
 
 ---
 
@@ -123,7 +118,7 @@ end-date: 2026-03-15
 
 ## Configuring the View
 
-Click the **gear icon** in the Base view header to open the Gantt settings panel.
+Click the **gear icon** in the view header to open the Gantt settings panel.
 
 ### Properties Section
 
@@ -182,9 +177,9 @@ If "Show progress" is enabled, a small handle appears inside the bar. Drag it to
 
 ---
 
-## Using with Bases Grouping
+## Grouping Tasks
 
-If you configure **grouping** in your Base (e.g., group by `status`), the Gantt chart reflects this with **group headers** — visual section bars that span the full date range of their group's tasks.
+If you configure **grouping** in the view (e.g., group by `status`), the Gantt chart reflects this with **group headers** — visual section bars that span the full date range of their group's tasks.
 
 ---
 
@@ -205,7 +200,7 @@ All commands are available via `Cmd/Ctrl + P`:
 
 ## Complete Example
 
-Here's a small project with all features in use. Create these notes in a folder, then create a Base from that folder and switch to Gantt view.
+Here's a small project with all features in use. Create these notes in a folder, then right-click the folder, select **New base from folder**, and switch the view to **Gantt**.
 
 **Planning.md**
 ```yaml
@@ -278,7 +273,7 @@ This will show:
 ## Troubleshooting
 
 ### I don't see a "Gantt" option in the view selector
-Make sure the Bases Gantt plugin is enabled in **Settings > Community plugins**. Also make sure you're running Obsidian **1.10.0 or later**.
+Make sure the plugin is enabled in **Settings > Community plugins**. Also make sure you're running Obsidian **1.10.0 or later**.
 
 ### My notes don't appear on the chart
 - Make sure your notes have a **date property** in the frontmatter (e.g., `start-date: 2026-03-01`)
@@ -293,7 +288,7 @@ This can happen if date values include timezone information. Use the plain `YYYY
 
 ### Dependency arrows aren't showing
 - Make sure the dependency property uses wiki-link syntax: `depends-on: "[[Other Note]]"`
-- The linked note must also be in the Base (it needs a start date to appear on the chart)
+- The linked note must also appear on the chart (it needs a start date)
 - Check that "Dependencies" is set to the correct property in view settings
 
 ---
