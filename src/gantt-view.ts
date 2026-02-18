@@ -668,11 +668,11 @@ export class GanttChartView extends BasesView {
 
 		if (!config.startProperty) {
 			el.createEl('p', {
-				text: 'Configure a start date property in the view options to display a Gantt chart.',
+				text: 'Configure a start date property in the view options to display the chart.',
 			});
 			el.createEl('p', {
 				cls: 'gantt-empty-hint',
-				text: 'Open view options (gear icon) and select a date property for "Start date".',
+				text: 'Open view options (gear icon) and select a date property for "start date".',
 			});
 		} else {
 			el.createEl('p', {
