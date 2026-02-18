@@ -264,7 +264,13 @@ export class GanttChartView extends BasesView {
 		}
 		this.ganttEl.empty();
 
-		const viewMode = (this.config.get('viewMode') as string) || 'Day';
+		// Map stored config values to Frappe Gantt's expected format
+		const VIEW_MODE_MAP: Record<string, string> = {
+			'Quarter day': 'Quarter Day',
+			'Half day': 'Half Day',
+		};
+		const rawViewMode = (this.config.get('viewMode') as string) || 'Day';
+		const viewMode = VIEW_MODE_MAP[rawViewMode] ?? rawViewMode;
 		const barHeight = (this.config.get('barHeight') as number) || 30;
 		const showProgress = (this.config.get('showProgress') as boolean) ?? false;
 		const showExpectedProgress = (this.config.get('showExpectedProgress') as boolean) ?? false;
@@ -738,8 +744,8 @@ export function getGanttViewOptions(config: BasesViewConfig): BasesAllOptions[] 
 					displayName: 'View mode',
 					default: 'Day',
 					options: {
-						'Quarter Day': 'Quarter day',
-						'Half Day': 'Half day',
+						'Quarter day': 'Quarter day',
+						'Half day': 'Half day',
 						Day: 'Day',
 						Week: 'Week',
 						Month: 'Month',
