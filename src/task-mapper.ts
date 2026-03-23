@@ -36,11 +36,14 @@ function extractRawValue(val: Value | null): string | null {
 }
 
 /**
- * Make a stable task ID from a file path.
- * Frappe Gantt replaces spaces with underscores internally, so we do the same.
+ * Make a stable, CSS-safe task ID from a file path.
+ * Frappe Gantt uses the ID as a CSS class (e.g. `.highlight-{id}`),
+ * so we must strip characters invalid in selectors: / . etc.
  */
 function makeTaskId(filePath: string): string {
-	return filePath.replace(/ /g, '_');
+	return filePath
+		.replace(/\.[^.]+$/, '')   // strip file extension
+		.replace(/[^a-zA-Z0-9_-]/g, '_');  // replace anything not CSS-safe
 }
 
 /** Prefix used to identify group header phantom tasks. */
